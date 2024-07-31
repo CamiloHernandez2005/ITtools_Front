@@ -190,57 +190,47 @@ export default {
       </div>
     </div>
 
-    <!-- DataTable de usuarios -->
-    <div class="flex-1 overflow-auto">
-      <div class="card p-4 flex flex-col gap-4 h-full">
-        <div class="font-semibold text-xl">Users</div>
-        <div class="overflow-x-auto">
-          <DataTable :value="users" class="p-datatable-sm">
-            <Column field="email" header="Email" />
-            <Column field="full_name" header="Full Name" />
-            <Column field="charge" header="Charge" />
-            <Column field="area" header="Area" />
-            <Column field="phone" header="Phone" />
-            <Column field="roles" header="Roles">
-              <template #body="{ data }">
-                <span>{{ data.roles.join(', ') }}</span>
-              </template>
-            </Column>
-            <Column field="status" header="Status">
-              <template #body="{ data }">
-                <span :class="data.status ? 'text-green-500' : 'text-red-500'">{{ data.status ? 'Active' : 'Inactive' }}</span>
-              </template>
-            </Column>
-            <Column header="Actions">
-              <template #body="{ data }">
-                <Button 
-                  v-if="!data.status"
-                  icon="pi pi-check" 
-                  class="p-button-rounded p-button-success p-button-text" 
-                  @click="openConfirmation(data, true)" 
-                />
-                <Button 
-                  v-if="data.status"
-                  icon="pi pi-times" 
-                  class="p-button-rounded p-button-warning p-button-text" 
-                  @click="openConfirmation(data, false)" 
-                />
-                <Button 
-                  icon="pi pi-pencil" 
-                  class="p-button-rounded p-button-info p-button-text" 
-                  @click="editUser(data)" 
-                />
-                <Button 
-                  icon="pi pi-trash" 
-                  class="p-button-rounded p-button-danger p-button-text" 
-                  @click="openConfirmation(data, false)" 
-                />
-              </template>
-            </Column>
-          </DataTable>
-        </div>
-      </div>
+   <!-- DataTable de usuarios -->
+<div class="flex-1 overflow-auto">
+  <div class="card p-4 flex flex-col gap-4 h-full">
+    <div class="font-semibold text-xl">Users</div>
+    <div class="overflow-x-auto">
+      <DataTable :value="users" class="p-datatable-sm">
+        <Column field="email" header="Email" />
+        <Column field="full_name" header="Full Name" />
+        <Column field="charge" header="Charge" />
+        <Column field="area" header="Area" />
+        <Column field="phone" header="Phone" />
+        <Column field="roles" header="Roles">
+          <template #body="{ data }">
+            <span>{{ data.roles.join(', ') }}</span>
+          </template>
+        </Column>
+        <Column field="status" header="Status">
+          <template #body="{ data }">
+            <span :class="data.status ? 'text-green-500' : 'text-red-500'">{{ data.status ? 'Active' : 'Inactive' }}</span>
+          </template>
+        </Column>
+        <Column header="Actions">
+          <template #body="{ data }">
+            <Button 
+                :icon="data.status ? 'pi pi-power-off' : 'pi pi-power-off'" 
+                :class="data.status ? 'p-button-rounded p-button-danger p-button-text' : 'p-button-rounded p-button-success p-button-text'"
+                @click="openConfirmation(data, !data.status)"
+              />
+            <Button 
+              icon="pi pi-pencil" 
+              class="p-button-rounded p-button-info p-button-text" 
+              @click="editUser(data)" 
+            />
+          </template>
+        </Column>
+      </DataTable>
+      
     </div>
+  </div>
+</div>
+
 
     <!-- Modal de edición de usuario -->
     <Dialog header="Edit User" v-model:visible="isEditDialogVisible" modal :footer="editDialogFooter">

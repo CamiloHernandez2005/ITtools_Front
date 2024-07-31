@@ -1,5 +1,4 @@
 import { fileURLToPath, URL } from 'node:url';
-
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import Components from 'unplugin-vue-components/vite';
@@ -17,5 +16,10 @@ export default defineConfig({
         alias: {
             '@': fileURLToPath(new URL('./src', import.meta.url))
         }
+    },
+    server: {
+        host: '0.0.0.0', // Escuchar en todas las interfaces de red
+        port: 5173, // Puedes cambiar el puerto si es necesario
+        strictPort: true // Asegúrate de que el puerto esté libre
     }
 });
