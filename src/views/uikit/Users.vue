@@ -1,5 +1,5 @@
 <script>
-import { registerUser, authService } from '@/service/AuthService';
+import { registerUser, authService } from '@/services/AuthService';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import Checkbox from 'primevue/checkbox';
@@ -32,6 +32,7 @@ export default {
       error: '',
       users: [],
       isEditDialogVisible: false,
+      editDialogFooter: null, 
       editUserData: {
         email: '',
         password: '',

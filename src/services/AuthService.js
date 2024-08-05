@@ -1,12 +1,24 @@
-import axios from 'axios';
+import axios from '../axios';
 
 const API_URL = 'http://localhost:8080'; // Asegúrate de que esta URL sea correcta
 
 export const authService = {
   async login(email, password) {
-    const response = await axios.post(`${API_URL}/auth/login`, { email, password });
-    return response;
+    try {
+      const response = await axios.post('/auth/login', { email, password });
+      const token = response.data; // `response.data` es el token directamente
+      if (token) {
+        localStorage.setItem('token', token); // Guarda el token en el localStorage
+        return { token }; // Opcionalmente, devuelve un objeto con el token
+      } else {
+        throw new Error('Token not found in response');
+      }
+    } catch (error) {
+      console.error('Login error:', error); // Añade más detalles del error
+      throw new Error(error.response?.data || 'Login failed');
+    }
   },
+
   logout() {
     localStorage.removeItem('token');
   },

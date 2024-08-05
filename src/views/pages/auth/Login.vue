@@ -1,7 +1,7 @@
 <script setup>
 import FloatingConfigurator from '@/components/FloatingConfigurator.vue';
 import { ref } from 'vue';
-import { authService } from '@/service/AuthService';
+import { authService } from '@/services/AuthService';
 import { useRouter } from 'vue-router';
 
 const email = ref('');
@@ -10,11 +10,15 @@ const router = useRouter();
 
 const handleLogin = async () => {
   try {
-    const response = await authService.login(email.value, password.value);
-    localStorage.setItem('token', response.data.token); // Store token in localStorage
-    router.push('/home'); // Redirect to users page
+    const { token } = await authService.login(email.value, password.value); // Obtén el token directamente
+    if (token) {
+      localStorage.setItem('token', token); // Guarda el token en el localStorage
+      router.push('/home'); // Redirige a la página de inicio
+    } else {
+      throw new Error('Token not found');
+    }
   } catch (error) {
-    console.error('Login failed:', error);
+    console.error('Login failed:', error); // Para depuración
     alert('Login failed: ' + (error.message || 'Invalid credentials'));
   }
 };

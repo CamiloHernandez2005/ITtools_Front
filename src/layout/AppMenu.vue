@@ -11,7 +11,7 @@ const model = ref([
     {
         label: 'UI Components',
         items: [
-            { label: 'Create Users', icon: 'pi pi-fw pi-id-card', to: '/uikit/formlayout' },
+            { label: 'Create Users', icon: 'pi pi-fw pi-id-card', to: '/uikit/users' },
         ]
     },
 ]);

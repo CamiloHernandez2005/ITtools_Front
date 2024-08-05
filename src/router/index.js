@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import AppLayout from '@/layout/AppLayout.vue';
 import Login from '@/views/pages/auth/Login.vue';
-import { authService } from '@/service/AuthService'; // Asegúrate de importar tu servicio de autenticación
+import { authService } from '@/services/AuthService'; // Asegúrate de importar tu servicio de autenticación
 
 const routes = [
     {
@@ -20,7 +20,7 @@ const routes = [
                 meta: { requiresAuth: true }
             },
             {
-                path: '/uikit/formlayout',
+                path: '/uikit/users',
                 name: 'formlayout',
                 component: () => import('@/views/uikit/Users.vue'),
                 meta: { requiresAuth: true }
