@@ -1,6 +1,4 @@
-import axios from '../axios';
-
-const API_URL = 'http://localhost:8080'; // Asegúrate de que esta URL sea correcta
+import axios from '../axios'; // Asegúrate de importar la instancia configurada
 
 export const authService = {
   async login(email, password) {
@@ -22,12 +20,14 @@ export const authService = {
   logout() {
     localStorage.removeItem('token');
   },
+
   getToken() {
     return localStorage.getItem('token');
   },
+
   async getUsers() {
     try {
-      const response = await axios.get(`${API_URL}/users`);
+      const response = await axios.get('/users');
       return response.data;
     } catch (error) {
       if (error.response) {
@@ -39,9 +39,10 @@ export const authService = {
       }
     }
   },
+
   async updateUser(userData) {
     try {
-      const response = await axios.put(`${API_URL}/users/${userData.id}`, userData);
+      const response = await axios.put(`/users/${userData.id}`, userData);
       return response.data; // O el mensaje de éxito del backend
     } catch (error) {
       if (error.response) {
@@ -57,7 +58,7 @@ export const authService = {
 
 export const registerUser = async (userData) => {
     try {
-      const response = await axios.post(`${API_URL}/auth/register`, userData);
+      const response = await axios.post('/auth/register', userData);
       return response.data; // O el mensaje de éxito del backend
     } catch (error) {
       if (error.response) {
@@ -68,4 +69,4 @@ export const registerUser = async (userData) => {
         throw new Error('Error setting up request: ' + error.message);
       }
     }
-  };
+};
