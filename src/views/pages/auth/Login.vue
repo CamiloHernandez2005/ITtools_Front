@@ -3,13 +3,11 @@ import FloatingConfigurator from '@/components/FloatingConfigurator.vue';
 import { ref } from 'vue';
 import { authService } from '@/services/AuthService';
 import { useRouter } from 'vue-router';
-import { GoogleLogin, decodeCredential, googleLogout } from 'vue3-google-login';
+import { GoogleLogin } from 'vue3-google-login';
 
 // Refs para manejo de estado y datos
 const email = ref('');
 const password = ref('');
-const loggedIn = ref(false);
-const user = ref(null);
 const router = useRouter();
 
 // Manejo de login
@@ -29,20 +27,22 @@ const handleLogin = async () => {
 };
 
 // Callback para Google Login
-const callback = (response) => {
-  console.log("logged in");
-  loggedIn.value = true;
-  console.log(response);
-  user.value = decodeCredential(response.credential);
-};
-
-// Logout
-const logout = () => {
-  googleLogout();
-  loggedIn.value = false;
+const callback = async (response) => {
+  try {
+    const googleToken = response.credential; // Obtén el token de Google
+    const { token } = await authService.loginWithGoogle(googleToken);
+    if (token) {
+      localStorage.setItem('token', token); // Guarda el token en el localStorage
+      router.push('/home'); // Redirige a la página de inicio
+    } else {
+      throw new Error('Token not found');
+    }
+  } catch (error) {
+    console.error('Google login failed:', error); // Para depuración
+    alert('Google login failed: ' + (error.message || 'Invalid credentials'));
+  }
 };
 </script>
-
 
 <template>
     <FloatingConfigurator />
@@ -70,9 +70,8 @@ const logout = () => {
                     </form>
 
                     <div class="flex flex-col items-center">
-
                         <div>
-                            <GoogleLogin :callback="callback" prompt="consent" auto-login class="mt-4" />
+                            <GoogleLogin :callback="callback" auto-login class="mt-4" />
                         </div>
                     </div>
                 </div>
